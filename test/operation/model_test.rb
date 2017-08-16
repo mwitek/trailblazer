@@ -19,8 +19,11 @@ class ModelTest < Minitest::Spec
     step Model( Song, :find ), override: true
   end
 
-  # :find it
+  # :find with symbol key
   it { Update.({ id: 1 })["model"].inspect.must_equal %{#<struct ModelTest::Song id=1>} }
+
+  # :find with string key
+  it { Update.({ "id" => 1 })["model"].inspect.must_equal %{#<struct ModelTest::Song id=1>} }
 
   #- inheritance
   it { Update["pipetree"].inspect.must_equal %{[>operation.new,>model.build]} }
@@ -46,7 +49,10 @@ class ModelTest < Minitest::Spec
   it do
     Find.(id: 9)["result.model"].success?.must_equal true
     Find.(id: 9)["x"].must_equal true
+    # :find_by with symbol key
     Find.(id: 9)["model"].inspect.must_equal %{#<struct ModelTest::Song id=9>}
+    # :find_by with string key
+    Find.("id" => 9)["model"].inspect.must_equal %{#<struct ModelTest::Song id=9>}
   end
 
   # #---

@@ -36,17 +36,17 @@ class Trailblazer::Operation
       end
 
       def find!(model_class, params, *)
-        model_class.find(params[:id])
+        model_class.find(params[:id] || params["id"])
       end
 
       # Doesn't throw an exception and will return false to divert to Left.
       def find_by!(model_class, params, *)
-        model_class.find_by(id: params[:id])
+        model_class.find_by(id: params[:id] || params["id"])
       end
 
       # Call any method on the model class and pass :id.
       def pass_through!(model_class, params, action)
-        model_class.send(action, params[:id])
+        model_class.send(action, (params[:id] || params["id"]))
       end
 
     private
